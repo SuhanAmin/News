@@ -148,8 +148,10 @@ catch(err){
 router.get('/news', async (req, res) => {
   try {
     const response = await fetch(`https://newsapi.org/v2/everything?q=india&language=en&sortBy=publishedAt&apiKey=${process.env.NEWS_API_KEY}`);
-    const data = await response.json();
-    console.log(data);
+   const text = await response.text(); // get raw response
+console.log("NewsAPI raw response:", text);
+
+const data = JSON.parse(text); // try to parse
     res.json(data);
   } catch (error) {
     console.error('News fetch failed:', error);
