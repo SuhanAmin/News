@@ -7,7 +7,7 @@ function islogged(req,res,next){
   
     let token=req.cookies.token
    
-    console.log(token);
+    
     
      if (!token) {
     return res.status(401).json({ message: "Unnbnnauthorized: No token" });
