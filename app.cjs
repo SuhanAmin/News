@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 app.use(cors({
-  origin:"http://localhost:5173",
+  origin:"https://news-frontend-uksv.onrender.com",
   credentials:true
 }
 ))
