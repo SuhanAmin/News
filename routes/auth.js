@@ -1,5 +1,6 @@
 const express=require('express');
 const router=express.Router();
+const axios = require('axios');
 const usermodel=require('../models/user')
 const postmodel=require('../models/post')
 const bcrypt=require('bcrypt')
@@ -145,25 +146,24 @@ catch(err){
 
 
 //const apiKey = '5b9b6485ee464c5cbb5d36093ff0aee1';
+
 router.get('/news', islogged, async (req, res) => {
   try {
-    const response = await fetch(`https://newsapi.org/v2/everything?q=india&language=en&sortBy=publishedAt&apiKey=${process.env.NEWS_API_KEY}`);
-    const data = await response.json();
-    res.json(data);
+    const response = await axios.get('https://newsapi.org/v2/everything', {
+      params: {
+        q: 'india',
+        language: 'en',
+        sortBy: 'publishedAt',
+        apiKey: process.env.NEWS_API_KEY
+      },
+      headers: {
+        'User-Agent': 'Mozilla/5.0'  // 👈 This bypasses Cloudflare bot detection
+      }
+    });
+
+    res.json(response.data);
   } catch (error) {
-    console.error('News fetch failed:', error);
-    res.status(500).json({ error: 'Failed to fetch news' });
-  }
-});
-
-router.get('/home', islogged, async (req, res) => {
-  try {
-  let post=await postmodel.find().sort({createdAt:-1})
-
-
-    res.json(post);
-  } catch (error) {
-  
+    console.error('News fetch failed:', error.message);
     res.status(500).json({ error: 'Failed to fetch news' });
   }
 });

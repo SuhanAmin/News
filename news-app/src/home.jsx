@@ -12,6 +12,7 @@ import { set } from 'mongoose';
   const[date,setdate]=useState("");
   const[time,settime]=useState("");
   const[news,setnews]=useState([]);
+  const [refresh, setRefresh] = useState(false);
 //const [likes, setLikes] = useState(0);
 
 
@@ -25,7 +26,7 @@ import { set } from 'mongoose';
 
   useEffect(()=>{
     load()
-  },[addlocalnews,like])
+  },[refresh])
   async function load() {
 
     const res=await fetch("https://news-2-zgo5.onrender.com/api/auth/home",{
@@ -68,6 +69,7 @@ import { set } from 'mongoose';
     .then(data=>{alert(data.msg)
       setnews([data,...news])
       closemodel()
+      setRefresh(prev=>!prev)
       //load()
      
       
@@ -101,6 +103,7 @@ import { set } from 'mongoose';
     );
 
     setnews(updatedNews);
+     setRefresh(prev=>!prev)
         
   };
    
